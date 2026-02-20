@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+output/
+data/output/*
+!data/output/.gitkeep
+.DS_Store
