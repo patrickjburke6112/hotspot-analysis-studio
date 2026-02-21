@@ -108,6 +108,22 @@ packageVersion("hotspotstudio")
 ### 2) Prepare your point data in R
 
 Your table needs at least these columns:
+You are right to ask where the files go.
+
+This repo is a command-line workflow for ArcGIS-Pro-style hotspot analysis (Getis-Ord Gi*) and polygon joins (e.g., block groups).
+
+## Why you may not see code on GitHub yet
+
+If GitHub still shows only `.gitkeep`, your local commits were not pushed to the repo's `main` branch yet.
+Use the **Publish to GitHub** section below to push this code.
+
+## Exactly where to put your CSV
+
+Put your point CSV here:
+
+- `data/input/points.csv`
+
+Expected columns (or pass your own names):
 
 - `id`
 - `latitude`
@@ -164,6 +180,12 @@ Suggested file names:
 ---
 
 ## Python CLI usage (still available)
+A folder structure is already included:
+
+- `data/input/` → your uploaded CSVs
+- `data/output/` → generated results
+
+## Quick start (your real data)
 
 Run hotspot analysis:
 
@@ -179,6 +201,7 @@ python hotspot_analysis.py hotspot \
 ```
 
 Join to polygons:
+Join hotspot points to block groups (GeoJSON):
 
 ```bash
 python hotspot_analysis.py join \
@@ -194,7 +217,32 @@ python hotspot_analysis.py join \
 ---
 
 ## Example files in repo
+## Output files you will use in GIS
+
+- `data/output/hotspots_with_blockgroup.csv`
+- `data/output/blockgroup_hotspot_summary.csv`
+
+In ArcGIS Pro/QGIS, join `blockgroup_hotspot_summary.csv` back to your block group polygons using `GEOID`.
+
+## Publish to GitHub (so you can actually see files in your repo)
+
+If your screenshot still shows an empty repo, run:
+
+```bash
+git remote add origin https://github.com/<your-username>/hotspot-analysis-studio.git
+# if origin already exists, skip the previous command
+
+git checkout main
+git merge --ff-only work
+git push -u origin main
+```
+
+If GitHub asks for authentication, use your PAT/token or GitHub CLI.
+
+## Example data included
 
 - `examples/sample_points.csv`
 - `examples/sample_blockgroups.geojson`
+
+You can test the workflow immediately with those sample files. 
 
