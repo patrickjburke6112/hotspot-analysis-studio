@@ -28,29 +28,38 @@ install.packages(c("remotes", "sf"))
 remotes::install_github("patrickjburke6112/hotspot-analysis-studio", ref = "main", build_vignettes = FALSE)
 ```
 
-If `install_github()` returns HTTP 404 in RStudio, use this exact fallback sequence:
+If `install_github()` returns HTTP 404 in RStudio, use one of these **no-Git-required** options:
 
 ```r
-# 1) Authenticate GitHub API requests in R (fixes private-repo/permission 404s)
-install.packages(c("gitcreds", "gh"))
-gitcreds::gitcreds_set()
-gh::gh_whoami()
+# Option A (pure R, no system git): install directly from GitHub codeload zip
+install.packages("remotes")
+remotes::install_url(
+  "https://codeload.github.com/patrickjburke6112/hotspot-analysis-studio/zip/refs/heads/main",
+  build_vignettes = FALSE
+)
+```
 
-# 2) Retry install from GitHub
+```r
+# Option B (manual download in browser, then local install)
+# 1) Open in browser:
+#    https://github.com/patrickjburke6112/hotspot-analysis-studio/archive/refs/heads/main.zip
+# 2) Unzip it
+# 3) Install from that unzipped folder path
+remotes::install_local("C:/path/to/hotspot-analysis-studio-main", build_vignettes = FALSE)
+```
+
+If you want to retry authenticated API install (optional):
+
+```r
+install.packages("gh")
+Sys.setenv(GITHUB_PAT = "<your_github_pat>")
+gh::gh_whoami()
 remotes::install_github("patrickjburke6112/hotspot-analysis-studio", ref = "main", build_vignettes = FALSE)
 ```
 
-If you still get 404, install from a local clone (bypasses GitHub API entirely):
-
-```r
-# In terminal (or Git Bash), clone then open RStudio in that folder
-# git clone https://github.com/patrickjburke6112/hotspot-analysis-studio.git
-
-# In RStudio, run from the cloned repo root:
-remotes::install_local(".", build_vignettes = FALSE, upgrade = "never")
-```
-
-If `install_url(main.zip)` says "no DESCRIPTION", that usually means GitHub returned a non-package page (auth/permissions/proxy) instead of the zip archive.
+Notes:
+- `gitcreds::gitcreds_set()` requires **system git**; skip it if git is not installed.
+- `git clone ...` is a shell command, not R code (run it in Git Bash/Terminal, not in R Console).
 
 After install, verify package load:
 
